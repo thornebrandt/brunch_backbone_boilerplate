@@ -1,0 +1,32 @@
+{
+  "author": "Thorne Brandt",
+  "name": "brunchBanana",
+  "description": "Brunch Boilerplate",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": "latest"
+  },
+  "scripts": {
+    "start": "brunch watch --server"
+  },
+  "dependencies": {
+    "clean-css-brunch": "latest",
+    "css-brunch": "latest",
+    "handlebars-brunch": "latest",
+    "javascript-brunch": "latest",
+    "less-brunch": "latest",
+    "node-sass": "^2.0.1",
+    "read-components": "latest",
+    "sass-brunch": "latest",
+    "uglify-js-brunch": "latest"
+  },
+  "devDependencies": {
+    "expect.js": "latest"
+  }
+}
