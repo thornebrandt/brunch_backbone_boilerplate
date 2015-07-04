@@ -18,12 +18,15 @@
   "dependencies": {
     "auto-reload-brunch": "^1.8.0",
     "clean-css-brunch": "latest",
+    "connect": "^3.4.0",
     "css-brunch": "latest",
     "handlebars-brunch": "latest",
     "javascript-brunch": "latest",
     "less-brunch": "latest",
+    "mongoose": "^4.0.6",
     "node-sass": "^2.0.1",
     "read-components": "latest",
+    "restify": "^3.0.3",
     "sass-brunch": "latest",
     "uglify-js-brunch": "latest"
   },
