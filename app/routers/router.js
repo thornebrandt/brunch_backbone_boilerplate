@@ -15,7 +15,7 @@ module.exports = Backbone.Router.extend({
             App.views.appView = new App.Views.AppView();
             App.views.appView.render();
         }
-        App.Views.indexView = new App.Views.IndexView();
-        App.Views.indexView.render();
+        App.views.indexView = new App.Views.IndexView();
+        App.views.indexView.render();
     }
 })
