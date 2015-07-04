@@ -16,6 +16,7 @@
     "start": "brunch watch --server"
   },
   "dependencies": {
+    "auto-reload-brunch": "^1.8.0",
     "clean-css-brunch": "latest",
     "css-brunch": "latest",
     "handlebars-brunch": "latest",

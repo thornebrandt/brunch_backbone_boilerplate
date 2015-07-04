@@ -1,16 +1,13 @@
 // Application bootstrapper.
-Application = {
+App = {
     initialize: function() {
-        
-        var HomeView = require('views/home_view')
-          , Router   = require('lib/router')
-        
-        this.homeView = new HomeView()
-        this.router   = new Router()
-        
-        if (typeof Object.freeze === 'function') Object.freeze(this)
-        
+        var Router   = require('routers/router');
+        this.Views = {};
+        this.views = {}; //instances
+        this.Models = {};
+        this.models = {}; //instances
+        this.router   = new Router();
     }
 }
 
-module.exports = Application
+module.exports = App
