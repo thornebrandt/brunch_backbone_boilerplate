@@ -33,3 +33,6 @@ bower_components/
 
 # Mongo data
 data
+
+#security
+/.dbconfig.js

@@ -1,4 +1,6 @@
-var application = require('application')
+var application = require('application');
+console.log("initialize");
+
 
 $(function() {
     application.initialize()

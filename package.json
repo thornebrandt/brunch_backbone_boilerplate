@@ -20,6 +20,7 @@
     "clean-css-brunch": "latest",
     "connect": "^3.4.0",
     "css-brunch": "latest",
+    "express": "^4.13.0",
     "handlebars-brunch": "latest",
     "javascript-brunch": "latest",
     "less-brunch": "latest",

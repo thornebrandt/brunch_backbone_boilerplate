@@ -19,3 +19,7 @@
     * Place static files you want to be copied from `app/assets/` to `public/`.
     * [Brunch site](http://brunch.io), [Backbone site](http://backbonejs.org/)
 
+
+
+#start mongo
+mongod --nojournal --dbpath=data
