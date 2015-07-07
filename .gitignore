@@ -36,3 +36,4 @@ data
 
 #security
 /.dbconfig.js
+app/assets/config.js

@@ -4,7 +4,6 @@ var template = require('../templates/index');
 var DudeModel = require('../models/dude-model');
 var DudeCollection = require('../collections/dude-collection');
 
-
 module.exports = View.extend({
     el: "#main",
     id: 'index-view',
@@ -16,14 +15,19 @@ module.exports = View.extend({
         this.dudeCollection = new DudeCollection();
         var self = this;
         this.dudeCollection.fetch({
-            url: BASE_URL + "/currentDude",
+            url: BASE_URL + "/dudes",
             success: function(data){
                 self.renderDudeCollection();
+            },
+            error: function(collection, response){
+                console.log("something went wrong getting dudes");
+                console.log(response);
             }
         });
     },
     renderDudeCollection: function(){
         var self = this;
+        console.log("dudecollectino");
         this.dudeCollection.each(function(model){
             $(self.el).append("<div class='dudePreviewContainer' id='" + model.get("_id") + "'></div>");
             var dudePreviewView = new DudePreviewView(model);

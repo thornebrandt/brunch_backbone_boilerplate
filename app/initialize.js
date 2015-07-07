@@ -1,8 +1,6 @@
-var application = require('application');
-console.log("initialize");
-
+window.App = require('application');
 
 $(function() {
-    application.initialize()
-    Backbone.history.start()
+    window.App.initialize();
+    Backbone.history.start({ pushState: true });
 })

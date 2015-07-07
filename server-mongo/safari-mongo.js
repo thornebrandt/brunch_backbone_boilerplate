@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
-var dbURI = 'mongodb://localhost/test';
-mongoose.connect(dbURI);
+var dbconfig = require('../dbconfig');
+var dbURI = dbconfig.dbURI
+mongoose.connect(dbconfig.dbURI);
 
 mongoose.connection.on('connected', function () {
   console.log('Mongoose connected to ' + dbURI);
@@ -53,36 +54,53 @@ exports.dudes = function(req, res){
     res.json({ what: "is this"});
 }
 
-
 exports.getDudes = function(req, res){
-    var myQuery = TestModel.find();
+    var myQuery = TestModel.find().sort( { date: -1 });
     myQuery.exec(function(err, dudes){
         if(!err){
             res.json(dudes);
-            //console.log(dudes);
         } else {
             return 'error';
         }
     });
 }
 
-// Build the Project model
-// mongoose.model( 'Project', projectSchema );
+exports.getCurrentDude = function(req, res){
+    var myQuery = TestModel.find({ date: { $gte: new Date(2016, 03, 21) }}).sort( { date: 1 }).limit(1);
+    myQuery.exec(function(err, dudes){
+        if(!err){
+            if(dudes.length > 0){
+                res.json(dudes);
+            } else {
+                exports.getPastDude(req, res);
+            }
+        } else {
+            return 'error';
+        }
+    });
+}
 
-// var newModel = new TestModel({
-//     dude: 'fromCode',
-//     hey: 'waz',
-//     date: new Date()
-// });
+exports.getFutureDude = function(req, res){
+    var myQuery = TestModel.find({ date: { $gte: new Date(2016, 03, 21) }}).sort( { date: 1 }).limit(1);
+    myQuery.exec(function(err, dudes){
+        if(!err){
+            res.json(dudes);
+        } else {
+            return 'error';
+        }
+    });
+}
 
-// newModel.save(function(err){
-//     if(!err){
-//         console.log('User saved');
-//     } else {
-//         console.log("error saving model");
-//         console.log(err);
-//     }
-// });
+exports.getPastDude = function(req, res){
+    var myQuery = TestModel.find({ date: { $lt: new Date(2016, 03, 21) }}).sort( { date: -1 }).limit(1);
+    myQuery.exec(function(err, dudes){
+        if(!err){
+            res.json(dudes);
+        } else {
+            return 'error';
+        }
+    });
+}
 
 
 var myQuery = TestModel.find();
