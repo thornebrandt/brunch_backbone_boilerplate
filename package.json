@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "auto-reload-brunch": "^1.8.0",
+    "body-parser": "^1.13.2",
     "clean-css-brunch": "latest",
     "connect": "^3.4.0",
     "css-brunch": "latest",

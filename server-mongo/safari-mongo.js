@@ -102,12 +102,25 @@ exports.getPastDude = function(req, res){
     });
 }
 
+exports.postDude = function(req, res){
+    var dude = new TestModel(req.body);
+    dude.save(function(err, dude){
+        if(!err){
+            res.json(dude);
+        } else {
+            return err;
+        }
+    });
+}
 
-var myQuery = TestModel.find();
-myQuery.exec(function(err, dudes){
-    if(!err){
-        //console.log(dudes);
-    }
-});
+
+
+
+// var myQuery = TestModel.find();
+// myQuery.exec(function(err, dudes){
+//     if(!err){
+//         //console.log(dudes);
+//     }
+// });
 
 

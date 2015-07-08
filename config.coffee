@@ -15,22 +15,17 @@ exports.config =
         'test/javascripts/test-vendor.js': /^test[\\/](?=vendor)/
       order:
         before: [
-          'bower_components/commonjs-require-definition'
+          'bower_components/commonjs-require-definition',
+          'bower_components/jquery/dist/jquery.js',
+          'vendor/scripts/jquery.plugin.js'
         ],
         after: [
-          # popover requires tooltip
-          'vendor/scripts/bootstrap/tooltip.js'
-          'vendor/scripts/bootstrap/popover.js'
-
-          # collapse requires transitions
-          'vendor/scripts/bootstrap/collapse.js'
-          'vendor/scripts/bootstrap/transition.js'
-
-          'test/vendor/scripts/test-helper.js'
+            'vendor/scripts/jquery.datepick.js'
+            'test/vendor/scripts/test-helper.js'
         ]
 
     stylesheets:
-      defaultExtension: 'less'
+      defaultExtension: 'sass'
       joinTo:
         'stylesheets/app.css': /^(app|vendor)/
         'test/stylesheets/test.css': /^test/

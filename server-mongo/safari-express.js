@@ -1,9 +1,13 @@
 var express = require('express'),
     db = require('./safari-mongo'),
-    dbconfig = require('../dbconfig');
+    dbconfig = require('../dbconfig'),
+    bodyParser = require('body-parser')
 
 var app = express();
-
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 app.use(function(req, res, next){
     res.header('Access-Control-Allow-Origin', dbconfig.origin);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -24,6 +28,8 @@ app.get('/something', function(req, res){
 app.get('/currentDude', db.getCurrentDude);
 
 app.get('/dudes', db.getDudes);
+
+app.post('/dudes/new', db.postDude);
 
 var server = app.listen(3000, function(){
     var host = server.address().address;
