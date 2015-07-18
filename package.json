@@ -20,19 +20,20 @@
     "body-parser": "^1.13.2",
     "clean-css-brunch": "latest",
     "connect": "^3.4.0",
+    "cors": "^2.7.1",
     "css-brunch": "latest",
+    "expect.js": "latest",
     "express": "^4.13.0",
     "handlebars-brunch": "latest",
     "javascript-brunch": "latest",
     "less-brunch": "latest",
     "mongoose": "^4.0.6",
+    "multer": "^0.1.8",
     "node-sass": "^2.0.1",
     "read-components": "latest",
+    "request": "^2.58.0",
     "restify": "^3.0.3",
     "sass-brunch": "latest",
     "uglify-js-brunch": "latest"
-  },
-  "devDependencies": {
-    "expect.js": "latest"
   }
 }

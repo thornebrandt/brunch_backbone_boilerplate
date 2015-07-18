@@ -1,9 +1,20 @@
-<form id="dudeForm">
-    Dude: <input type="text" name="dude" id="dudeInput"/>
+<form id="dudeForm" enctype="multipart/form-data">
+    Dude: <input type="text" name="dude" id="dudeInput" />
     <br>
     Greeting: <input type="text" name="greeting" id="greetingInput" />
     <br>
     <div id="inlineDatePicker"></div>
     <input type="hidden" name="date" id="dateInput" />
-    <input type="submit" value="submit">
+    <br>
+{{!--     <input type="file" name="photo" id="photoInput" />
+ --}}    <br>
+    <input type="submit" value="Submit" name="submit">
 </form>
+
+
+
+<input id="fileupload" type="file" name="files[]" multiple>
+
+<div id="progress" class="progress">
+    <div class="progress-bar progress-bar-success"></div>
+</div>

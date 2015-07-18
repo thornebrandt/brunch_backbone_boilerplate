@@ -3,3 +3,6 @@ mongod --nojournal --dbpath=data
 
 #to start node server
 DEBUG=main node ./server-mongo/safari-express.js
+
+#to start brunch
+npm start

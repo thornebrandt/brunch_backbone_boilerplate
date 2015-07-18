@@ -7,13 +7,15 @@ module.exports = Backbone.Router.extend({
         App.Views.IndexView = require('../views/index-view');
         App.Views.DudesView = require('../views/dudes-view');
         App.Views.NewDudeView = require('../views/new-dude-view');
+        this.setupAjax();
 
     },
 
     routes: {
         '': 'index',
         'dudes': 'dudes',
-        'dudes/new': 'newDude'
+        'dudes/new': 'newDude',
+        'dudes/:id' : 'specificDude'
     },
 
     index: function() {
@@ -23,6 +25,13 @@ module.exports = Backbone.Router.extend({
         }
         App.views.indexView = new App.Views.IndexView();
         App.views.indexView.render();
+    },
+
+    specificDude: function(id){
+        if(!App.views.appView) {
+            App.views.appView = new App.Views.AppView();
+            App.views.appView.render();
+        }
     },
 
     dudes: function(){
@@ -41,5 +50,14 @@ module.exports = Backbone.Router.extend({
         }
         App.views.newDudeView = new App.Views.NewDudeView();
         App.views.newDudeView.render();
+    },
+
+
+    setupAjax: function(){
+        $.ajaxSetup({
+            crossDomain: true
+        });
     }
+
+
 })

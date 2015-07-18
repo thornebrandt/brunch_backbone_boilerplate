@@ -55,6 +55,7 @@ exports.dudes = function(req, res){
 }
 
 exports.getDudes = function(req, res){
+    console.log("getting dudes");
     var myQuery = TestModel.find().sort( { date: -1 });
     myQuery.exec(function(err, dudes){
         if(!err){

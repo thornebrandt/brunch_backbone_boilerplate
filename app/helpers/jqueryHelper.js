@@ -1,6 +1,5 @@
 module.exports = {
     initialize: function(){
-        console.log("initializing jqueryHelper");
         $.fn.serializeObject = function() {
             var o = {};
             var a = this.serializeArray();

@@ -2,7 +2,7 @@ var View     = require('./view');
 var DudePreviewView = require('../views/dude-preview-view');
 var template = require('../templates/new-dude-template');
 var DudeModel = require('../models/dude-model');
-var dateHelper = require('../helpers/dateHelper');
+var time = require('../helpers/dateHelper');
 
 
 module.exports = View.extend({
@@ -15,30 +15,82 @@ module.exports = View.extend({
     afterRender: function(){
         this.setupDatePick();
     },
+
+
     submitDudeFormHandler: function(e){
         e.preventDefault();
-        //console.log( $(e.target).serializeObject() );
         this.model = new DudeModel( $(e.target).serializeObject() );
-        console.log("sending this model");
-        console.log(this.model);
-        this.model.save().then(
-            function succes(data){
-                console.log("success");
-                console.log(data);
-                App.router.navigate("/dudes", { trigger: true });
+        var $form = $(e.target);
+        var fileInput = $("#photoInput");
 
-            },
-            function error(err){
-                console.log("Error");
-                console.log(err);
-            }
-        );
+        var url = BASE_URL + "/api/photo"
+        var values = {};
+        _.each($form.serializeArray(), function(input){
+            values[ input.name ] = input.value;
+        });
+
+        this.model.save(values, {
+            iframe: true,
+            files: fileInput,
+            data: values,
+            processData: false
+        });
+
+        $('#fileupload').fileupload({
+                url: url,
+                dataType: 'json',
+                done: function (e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        $('<p/>').text(file.name).appendTo('#files');
+                    });
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                }
+        }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+
+
+        // $.ajax(url, { //works
+        //     files: $("#photoInput"),
+        //     iframe: true,
+        //     method: "post",
+        //     type: "POST",
+        // }).complete(function(data){
+        //     console.log(data);
+        // });
+
+
+
+
+        // this.model.save({
+        //     iframe: true,
+        //     type: "POST",
+        //     files: fileInput,
+        // });
+
+        // this.model.save().then(
+        //     function succes(data){
+        //         console.log("success");
+        //         console.log(data);
+        //         App.router.navigate("/dudes", { trigger: true });
+
+        //     },
+        //     function error(err){
+        //         console.log("Error");
+        //         console.log(err);
+        //     }
+        // );
     },
     setupDatePick: function(){
-        $("#inlineDatePicker").datepick({
+        $("#inlineDatePicker").datepicker({
             onSelect: function(date){
-                var dateMoment = new moment(date[0]);
-                console.log(dateMoment.format(dateHelper.UTC_format));
+                var dateMoment = new moment(date, time.datepicker_format);
                 $("#dateInput").val(date);
             },
         });

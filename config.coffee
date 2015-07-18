@@ -17,11 +17,16 @@ exports.config =
         before: [
           'bower_components/commonjs-require-definition',
           'bower_components/jquery/dist/jquery.js',
-          'vendor/scripts/jquery.plugin.js'
+          'vendor/scripts/jquery.plugin.js',
+          'vendor/scripts/jquery.ui.js',
+          'vendor/scripts/jquery.ui.widget.js',
+          'vendor/scripts/jquery.iframe-transport.js'
+          'vendor/scripts/jquery.fileupload.js',
         ],
         after: [
-            'vendor/scripts/jquery.datepick.js'
-            'test/vendor/scripts/test-helper.js'
+            'vendor/scripts/jquery.ui.datepicker.js'
+            'test/vendor/scripts/test-helper.js',
+            'vendor/scripts/jsquery.fileupload-image.js'
         ]
 
     stylesheets:
