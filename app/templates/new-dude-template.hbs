@@ -1,20 +1,22 @@
 <form id="dudeForm" enctype="multipart/form-data">
-    Dude: <input type="text" name="dude" id="dudeInput" />
+    Dude: <input type="text" name="dude" id="dudeInput" required/>
     <br>
-    Greeting: <input type="text" name="greeting" id="greetingInput" />
+    Greeting: <input type="text" name="greeting" id="greetingInput" required/>
     <br>
     <div id="inlineDatePicker"></div>
     <input type="hidden" name="date" id="dateInput" />
     <br>
 {{!--     <input type="file" name="photo" id="photoInput" />
  --}}    <br>
-    <input type="submit" value="Submit" name="submit">
+    <input id="fileupload" type="file" name="photo" required>
+    <input type="submit" value="Submit" name="submit" id="upload_btn">
 </form>
 
 
-
-<input id="fileupload" type="file" name="files[]" multiple>
-
 <div id="progress" class="progress">
     <div class="progress-bar progress-bar-success"></div>
+</div>
+
+<div id="displayImage">
+    <img id="uploadedImage" src="/images/placeholder.jpg" width="300">
 </div>

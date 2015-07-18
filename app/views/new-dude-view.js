@@ -14,6 +14,43 @@ module.exports = View.extend({
     },
     afterRender: function(){
         this.setupDatePick();
+        this.setupUploader();
+    },
+
+    setupUploader: function(){
+        var url = BASE_URL + "/api/photo"
+
+        $('#fileupload').fileupload({
+            url: url,
+            dataType: 'json',
+            add: function(e, data){
+                console.log("removing default behavior");
+                $("#upload_btn").off('click').on('click', function(e){
+                    e.preventDefault();
+                    data.submit();
+                });
+            },
+            done: function(e, data){
+                console.log(data);
+                var absolute_image_path = data.result.files.photo.path;
+                var image_path = absolute_image_path.replace("public", "");
+                $("#uploadedImage").attr("src", image_path);
+
+            },
+            progressall: function(e, data){
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                console.log("progress: " + progress);
+                // $('#progress .progress-bar').css(
+                //     'width',
+                //     progress + '%'
+                // );
+            },
+            fail: function(e, data){
+                console.log("fail");
+                console.log(e);
+                console.log(data);
+            }
+        });
     },
 
 
@@ -36,23 +73,7 @@ module.exports = View.extend({
             processData: false
         });
 
-        $('#fileupload').fileupload({
-                url: url,
-                dataType: 'json',
-                done: function (e, data) {
-                    $.each(data.result.files, function (index, file) {
-                        $('<p/>').text(file.name).appendTo('#files');
-                    });
-                },
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                }
-        }).prop('disabled', !$.support.fileInput)
-                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
 
 
 

@@ -53,22 +53,9 @@ app.post('/dudes/new', db.postDude);
 
 
 app.post('/api/photo', function(req, res, next){
-    console.log("posting to /api/photo");
-    //console.log(req.files);
-    var requestOptions = {
-        url: dbconfig.origin,
-        method: "POST"
-    };
-    var x = request(requestOptions);
-    var form = x.form();
-    console.log(req.files);
-    form.append('photo', fs.createReadStream(req.files.photo.path));
-
-    res.send('<meta http-equiv="Content-type" content="text/html;charset=UTF-8">hey');
-    //x.pipe(res);
-    // if(done==true){
-    //     res.end('<textarea data-type="application/json">{"ok": true, "message": "Thanks so much"}   </textarea>');
-    // }
+    console.log("posting to /api/photo: req:");
+    console.log(req);
+    res.json({files: req.files});
 });
 
 
