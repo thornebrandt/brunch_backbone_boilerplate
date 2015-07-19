@@ -63,7 +63,7 @@ app.post('/api/photo', db.postDudePhoto);
 
 
 
-var server = app.listen(3000, function(){
+var server = app.listen(dbconfig.PORT_NUMBER, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('app listening on http://%s:%s', host, port);
