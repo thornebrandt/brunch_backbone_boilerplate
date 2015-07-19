@@ -31,11 +31,14 @@ module.exports = View.extend({
                 });
             },
             done: function(e, data){
-                console.log(data);
-                var absolute_image_path = data.result.files.photo.path;
-                var image_path = absolute_image_path.replace("public", "");
-                $("#uploadedImage").attr("src", image_path);
-
+                console.log(data.result);
+                var image_path = data.result.photo;
+                var dude = data.result.dude;
+                var date = new moment(data.result.date, time.UTC_format).format(time.url_format);
+                var url = "/dudes/" + date + "/" + dude;
+                App.router.navigate(url, { trigger: true });
+                //var image_path = absolute_image_path.replace("public", "");
+                //$("#uploadedImage").attr("src", image_path);
             },
             progressall: function(e, data){
                 var progress = parseInt(data.loaded / data.total * 100, 10);

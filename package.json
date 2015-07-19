@@ -27,6 +27,7 @@
     "handlebars-brunch": "latest",
     "javascript-brunch": "latest",
     "less-brunch": "latest",
+    "moment": "^2.10.3",
     "mongoose": "^4.0.6",
     "multer": "^0.1.8",
     "node-sass": "^2.0.1",

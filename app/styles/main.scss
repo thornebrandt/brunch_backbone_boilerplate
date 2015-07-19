@@ -1,3 +1,18 @@
 body{
     color: green;
+    font-family: Helvetica;
+}
+
+.dudePreview{
+    text-decoration: none;
+    display:block;
+    border: black solid 1px;
+    width: 200px;
+    background: gray;
+    margin: 10px;
+    color: white;
+    padding: 10px;
+    &:hover{
+        color: pink;
+    }
 }

@@ -3,7 +3,6 @@ module.exports = View.extend({
     initialize: function(model){
         this.render = _.bind(this.render, this);
         this.model = model
-        console.log("initializin");
     },
     render: function(){
         this.beforeRender();
@@ -13,6 +12,8 @@ module.exports = View.extend({
     },
     beforeRender: function(){
         this.$el = $("#" + this.model.get("_id"));
+        this.undelegateEvents();
+        this.delegateEvents();
     },
     getRenderData: function(){
         return this.model.toJSON();

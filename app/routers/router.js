@@ -6,6 +6,7 @@ module.exports = Backbone.Router.extend({
         App.Views.AppView = require('../views/app-view');
         App.Views.IndexView = require('../views/index-view');
         App.Views.DudesView = require('../views/dudes-view');
+        App.Views.DudeView = require('../views/dude-view');
         App.Views.NewDudeView = require('../views/new-dude-view');
         this.setupAjax();
 
@@ -15,7 +16,7 @@ module.exports = Backbone.Router.extend({
         '': 'index',
         'dudes': 'dudes',
         'dudes/new': 'newDude',
-        'dudes/:id' : 'specificDude'
+        'dudes/:date/:dude' : 'specificDude'
     },
 
     index: function() {
@@ -27,11 +28,15 @@ module.exports = Backbone.Router.extend({
         App.views.indexView.render();
     },
 
-    specificDude: function(id){
+    specificDude: function(_date, _dude){
         if(!App.views.appView) {
             App.views.appView = new App.Views.AppView();
             App.views.appView.render();
         }
+        App.views.dudeView = new App.Views.DudeView();
+        App.views.dudeView.URLdate = _date;
+        App.views.dudeView.dude = _dude;
+        App.views.dudeView.findDude();
     },
 
     dudes: function(){

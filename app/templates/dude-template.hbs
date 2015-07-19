@@ -1,0 +1,14 @@
+<div id="dude-container">
+    {{#if dude}}
+        <h1>{{dude}}</h1>
+        <h2>{{greeting}}</h2>
+        {{#if photo }}
+            <img id="dude-photo" src="{{photo}}">
+        {{ else }}
+            no photo
+        {{/if}}
+    {{ else }}
+        <h1>Not found</h1>
+    {{/if}}
+</div>
+

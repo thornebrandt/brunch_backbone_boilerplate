@@ -2,12 +2,10 @@ var express = require('express'),
     request = require('request'),
     fs = require('fs'),
     db = require('./safari-mongo'),
+    cors = require('cors'),
     dbconfig = require('../dbconfig'),
     bodyParser = require('body-parser'),
-    multer = require('multer'),
-    cors = require('cors')
-
-var done = false;
+    multer = require('multer');
 
 var app = express();
 
@@ -47,16 +45,21 @@ app.get('/something', function(req, res){
 });
 app.get('/currentDude', db.getCurrentDude);
 
+app.get('/dude/:date/:dude', db.getDude);
+
 app.get('/dudes', db.getDudes);
 
 app.post('/dudes/new', db.postDude);
 
+app.post('/api/photo', db.postDudePhoto);
 
-app.post('/api/photo', function(req, res, next){
-    console.log("posting to /api/photo: req:");
-    console.log(req);
-    res.json({files: req.files});
-});
+// app.post('/api/photo', function(req, res, next){
+//     console.log("posting to /api/photo: req:");
+//     console.log(req);
+//     res.json({files: req.files});
+// });
+
+
 
 
 
