@@ -35,5 +35,5 @@ bower_components/
 data
 
 #security
-/.dbconfig.js
+dbconfig.js
 app/assets/config.js
