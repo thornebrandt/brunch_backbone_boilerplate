@@ -30,7 +30,6 @@
     "moment": "^2.10.3",
     "mongoose": "^4.0.6",
     "multer": "^0.1.8",
-    "node-sass": "^2.0.1",
     "read-components": "latest",
     "request": "^2.58.0",
     "restify": "^3.0.3",
