@@ -8,7 +8,7 @@ var express = require('express'),
     multer = require('multer');
 
 var app = express();
-
+app.use('/', express.static(__dirname + '/'));
 app.use(cors());
 
 var multerOptions = {
@@ -67,4 +67,5 @@ var server = app.listen(dbconfig.PORT_NUMBER, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('app listening on http://%s:%s', host, port);
+    console.log('dirname: ' + __dirname);
 });

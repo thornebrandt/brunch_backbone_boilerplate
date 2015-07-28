@@ -29,6 +29,7 @@
     "less-brunch": "latest",
     "moment": "^2.10.3",
     "mongoose": "^4.0.6",
+    "morgan": "^1.6.1",
     "multer": "^0.1.8",
     "read-components": "latest",
     "request": "^2.58.0",
