@@ -2,6 +2,10 @@ exports.config =
 
   framework: 'backbone'
 
+  server:
+    port: 21373
+    run: yes
+
   paths:
     public: 'public'
 

@@ -34,6 +34,9 @@ bower_components/
 # Mongo data
 data
 
+#nohup
+nohup.out
+
 #security
 dbconfig.js
 app/assets/config.js
