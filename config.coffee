@@ -5,6 +5,10 @@ exports.config =
   paths:
     public: 'public'
 
+  server:
+    port: 19379
+    run: yes
+
   files:
     javascripts:
       defaultExtension: 'js'
