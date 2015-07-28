@@ -1,6 +1,8 @@
 module.exports = {
-  dbURI: 'mongodb://localhost/test',
-  origin: 'http://localhost:3333',
-  BASE_URL: 'http://localhost:3000',
-  PORT_NUMBER: 3000
+  dbURI: 'mongodb://testUser:testPassword@localhost:1234/dads',
+  origin: 'http://dadschicago.com',
+  BASE_URL: 'http://localhost:1234',
+  PORT_NUMBER: 1234,
+  public_path: '/../../public',
+  upload_path: '/api/uploads/'
 }
