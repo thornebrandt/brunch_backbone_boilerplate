@@ -8,8 +8,10 @@ var express = require('express'),
     multer = require('multer');
 
 var app = express();
-
+app.use(express.static(__dirname + dbconfig.public_path));
 app.use(cors());
+
+
 
 var multerOptions = {
     dest: 'public/uploads',
@@ -61,10 +63,9 @@ app.post('/api/photo', db.postDudePhoto);
 
 
 
-
-
 var server = app.listen(dbconfig.PORT_NUMBER, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('app listening on http://%s:%s', host, port);
+    console.log(dbconfig.upload_path);
 });

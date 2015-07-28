@@ -147,7 +147,7 @@ exports.postDude = function(req, res){
 exports.postDudePhoto = function(req, res){
     console.log("files");
     console.log(req.files);
-    req.body.photo = "/uploads/" + req.files.photo.name;
+    req.body.photo = dbconfig.upload_path + req.files.photo.name;
     console.log("body");
     console.log(req.body);
     var dude = new TestModel(req.body);
