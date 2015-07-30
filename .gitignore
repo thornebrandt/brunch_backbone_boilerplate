@@ -39,4 +39,5 @@ nohup.out
 
 #security
 dbconfig.js
+config.coffee
 app/assets/config.js
