@@ -1,3 +1,4 @@
+var dbconfig = require('../../dbconfig');
 var DudeModel = require('../models/dude-model.js');
 var moment = require('moment');
 var UTC_format = "YYYY-MM-DDTHH:mm:ss";
@@ -57,9 +58,25 @@ exports.getDude = function(req, res){
         if(!err){
             res.json(dude);
         } else {
-            return 'error';
+            return 'error getting dude';
         }
     });
+}
+
+
+exports.updateDude = function(req, res){
+    var id = req.params._id;
+    DudeModel.findById(id, function(err, dude){
+        if(!err){
+            dude = req.params;
+            dude.save(function(err){
+                if(err) return handleError(err);
+                res.send(dude);
+            });
+        } else {
+            return 'error updating dude';
+        }
+    })
 }
 
 
@@ -69,7 +86,7 @@ exports.getFutureDude = function(req, res){
         if(!err){
             res.json(dudes);
         } else {
-            return 'error';
+            return 'error getting future dude';
         }
     });
 }
@@ -80,7 +97,7 @@ exports.getPastDude = function(req, res){
         if(!err){
             res.json(dudes);
         } else {
-            return 'error';
+            return 'error getting past dude';
         }
     });
 }

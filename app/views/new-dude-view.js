@@ -3,7 +3,7 @@ var DudePreviewView = require('../views/dude-preview-view');
 var template = require('../templates/new-dude-template');
 var DudeModel = require('../models/dude-model');
 var time = require('../helpers/dateHelper');
-
+var FileHelper = require('../helpers/fileHelper');
 
 module.exports = View.extend({
     el: "#main",
@@ -15,6 +15,16 @@ module.exports = View.extend({
     afterRender: function(){
         this.setupDatePick();
         this.setupUploader();
+        this.setupImagePreview();
+    },
+
+    showPreviewImage: function(source) {
+        $("#imagePreview").attr("src", source);
+    },
+
+    setupImagePreview: function(){
+        var fileHelper = new FileHelper();
+        fileHelper.uploadImagePreview( $("#fileupload"), this.showPreviewImage);
     },
 
     setupUploader: function(){
@@ -24,7 +34,6 @@ module.exports = View.extend({
             url: url,
             dataType: 'json',
             add: function(e, data){
-                console.log("removing default behavior");
                 $("#upload_btn").off('click').on('click', function(e){
                     e.preventDefault();
                     data.submit();
@@ -37,8 +46,6 @@ module.exports = View.extend({
                 var date = new moment(data.result.date, time.UTC_format).format(time.url_format);
                 var url = "/dudes/" + date + "/" + dude;
                 App.router.navigate(url, { trigger: true });
-                //var image_path = absolute_image_path.replace("public", "");
-                //$("#uploadedImage").attr("src", image_path);
             },
             progressall: function(e, data){
                 var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -76,46 +83,15 @@ module.exports = View.extend({
             processData: false
         });
 
-
-
-
-
-        // $.ajax(url, { //works
-        //     files: $("#photoInput"),
-        //     iframe: true,
-        //     method: "post",
-        //     type: "POST",
-        // }).complete(function(data){
-        //     console.log(data);
-        // });
-
-
-
-
-        // this.model.save({
-        //     iframe: true,
-        //     type: "POST",
-        //     files: fileInput,
-        // });
-
-        // this.model.save().then(
-        //     function succes(data){
-        //         console.log("success");
-        //         console.log(data);
-        //         App.router.navigate("/dudes", { trigger: true });
-
-        //     },
-        //     function error(err){
-        //         console.log("Error");
-        //         console.log(err);
-        //     }
-        // );
     },
     setupDatePick: function(){
+        var $dateInput = $("#dateInput");
+        var today = new moment().format(time.datepicker_format);
+        $dateInput.val(today);
+
         $("#inlineDatePicker").datepicker({
             onSelect: function(date){
-                var dateMoment = new moment(date, time.datepicker_format);
-                $("#dateInput").val(date);
+                $dateInput.val(date);
             },
         });
     }

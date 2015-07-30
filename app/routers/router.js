@@ -16,43 +16,45 @@ module.exports = Backbone.Router.extend({
         '': 'index',
         'dudes': 'dudes',
         'dudes/new': 'newDude',
-        'dudes/:date/:dude' : 'specificDude'
+        'dudes/:date/:dude' : 'specificDude',
+        'dudes/:data/:dude/edit' : 'editSpecificDude'
     },
 
-    index: function() {
+    loadApp: function(){
         if(!App.views.appView) {
             App.views.appView = new App.Views.AppView();
             App.views.appView.render();
         }
+    },
+
+    index: function() {
+        this.loadApp();
         App.views.indexView = new App.Views.IndexView();
         App.views.indexView.render();
     },
 
     specificDude: function(_date, _dude){
-        if(!App.views.appView) {
-            App.views.appView = new App.Views.AppView();
-            App.views.appView.render();
-        }
+        this.loadApp();
         App.views.dudeView = new App.Views.DudeView();
         App.views.dudeView.URLdate = _date;
         App.views.dudeView.dude = _dude;
         App.views.dudeView.findDude();
     },
 
+    editSpecificDude: function(_data, _dude){
+        this.loadApp();
+        console.log("editing dude view will go here");
+    },
+
+
     dudes: function(){
-        if(!App.views.appView) {
-            App.views.appView = new App.Views.AppView();
-            App.views.appView.render();
-        }
+        this.loadApp();
         App.views.dudesView = new App.Views.DudesView();
         App.views.dudesView.render();
     },
 
     newDude: function(){
-        if(!App.views.appView) {
-            App.views.appView = new App.Views.AppView();
-            App.views.appView.render();
-        }
+        this.loadApp();
         App.views.newDudeView = new App.Views.NewDudeView();
         App.views.newDudeView.render();
     },
