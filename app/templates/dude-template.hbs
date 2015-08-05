@@ -1,5 +1,9 @@
 <div id="dude-container">
+    <p>
+        <a href="#" id="backToDudes">All Dudes</a>
+    </p>
     {{#if dude}}
+        {{URLdate}}
         <h1>{{dude}}</h1>
         <h2>{{greeting}}</h2>
         {{#if photo }}
@@ -10,5 +14,8 @@
     {{ else }}
         <h1>Not found</h1>
     {{/if}}
+    <p>
+        <a href="#" id="editDudeBtn">EDIT</a>
+    </p>
 </div>
 

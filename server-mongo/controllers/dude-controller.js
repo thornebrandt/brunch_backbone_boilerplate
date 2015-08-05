@@ -2,6 +2,8 @@ var dbconfig = require('../../dbconfig');
 var DudeModel = require('../models/dude-model.js');
 var moment = require('moment');
 var UTC_format = "YYYY-MM-DDTHH:mm:ss";
+var db = require('../db');
+
 
 exports.doSomething = function(){
     return "do it!!!!!";
@@ -12,7 +14,6 @@ exports.dudes = function(req, res){
 }
 
 exports.getDudes = function(req, res){
-    console.log("getting dudes from my bombass controller");
     var myQuery = DudeModel.find().sort( { date: -1 });
     myQuery.exec(function(err, dudes){
         if(!err){
@@ -65,10 +66,21 @@ exports.getDude = function(req, res){
 
 
 exports.updateDude = function(req, res){
-    var id = req.params._id;
+    var id = req.body._id;
+    if(req.files){
+        req.body.photo = dbconfig.upload_path + req.files.photo.name;
+    }
+    console.log("req.body");
+    console.log(req.body);
+    console.log("what is id");
+    console.log(id);
+
+
     DudeModel.findById(id, function(err, dude){
+        console.log("what is dude");
+        console.log(dude);
         if(!err){
-            dude = req.params;
+            dude.set(req.body)
             dude.save(function(err){
                 if(err) return handleError(err);
                 res.send(dude);
@@ -77,6 +89,19 @@ exports.updateDude = function(req, res){
             return 'error updating dude';
         }
     })
+}
+
+
+exports.postDudePhoto = function(req, res){
+    req.body.photo = dbconfig.upload_path + req.files.photo.name;
+    var dude = new DudeModel(req.body);
+    dude.save(function(err, dude){
+        if(!err){
+            res.json(dude);
+        } else {
+            return err;
+        }
+    });
 }
 
 
@@ -113,18 +138,3 @@ exports.postDude = function(req, res){
     });
 }
 
-exports.postDudePhoto = function(req, res){
-    console.log("files");
-    console.log(req.files);
-    req.body.photo = dbconfig.upload_path + req.files.photo.name;
-    console.log("body");
-    console.log(req.body);
-    var dude = new DudeModel(req.body);
-    dude.save(function(err, dude){
-        if(!err){
-            res.json(dude);
-        } else {
-            return err;
-        }
-    });
-}

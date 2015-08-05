@@ -11,5 +11,6 @@ var testSchema = new mongoose.Schema({
     collection: 'testCollection'
 });
 
+testSchema.index({ dude: 1, date: 1 }, { unique: true })
 
 module.exports = mongoose.model('TestModel', testSchema);

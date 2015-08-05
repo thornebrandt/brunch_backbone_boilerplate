@@ -53,6 +53,7 @@ app.get('/currentDude', dudeController.getCurrentDude);
 app.get('/dude/:date/:dude', dudeController.getDude);
 app.get('/dudes', dudeController.getDudes);
 app.post('/dudes/new', dudeController.postDude);
+app.patch('/dudes/edit', dudeController.updateDude);
 app.post('/api/photo', dudeController.postDudePhoto);
 
 

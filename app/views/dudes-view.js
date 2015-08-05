@@ -8,9 +8,17 @@ module.exports = View.extend({
     el: "#main",
     id: 'index-view',
     template: template,
+    events: {
+        "click #newDudeBtn" : "newDudeBtnHandler"
+    },
     afterRender: function(){
         this.setupDudeCollection();
     },
+    newDudeBtnHandler: function(e){
+        e.preventDefault();
+        App.router.navigate("dudes/new", { trigger: true });
+    },
+
     setupDudeCollection: function(){
         this.dudeCollection = new DudeCollection();
         var self = this;
@@ -27,7 +35,6 @@ module.exports = View.extend({
     },
     renderDudeCollection: function(){
         var self = this;
-        console.log("dudecollectino");
         this.dudeCollection.each(function(model){
             $(self.el).append("<div class='dudePreviewContainer' id='" + model.get("_id") + "'></div>");
             var dudePreviewView = new DudePreviewView(model);

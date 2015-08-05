@@ -35,6 +35,7 @@
     "request": "^2.58.0",
     "restify": "^3.0.3",
     "sass-brunch": "latest",
-    "uglify-js-brunch": "latest"
+    "uglify-js-brunch": "latest",
+    "underscore": "^1.8.3"
   }
 }

@@ -11,19 +11,25 @@ module.exports = View.extend({
     // afterRender: function(){
     //     this.findDude();
     // },
+    events: {
+        'click #backToDudes' : 'backToDudesHandler',
+        'click #editDudeBtn' : 'clickEditDudeHandler'
+    },
     getRenderData: function(){
         return this.model.toJSON();
     },
-    findDude: function(){
+
+    fetchDude: function(_date, _dude){
         var self = this;
+        this.URLdate = _date;
+        this.dude = _dude;
         this.date = new moment(this.URLdate, time.url_format).format(time.UTC_format);
         var url = BASE_URL + "/dude/" + this.date + "/" + this.dude;
         this.model = new DudeModel();
         this.model.fetch({
             url: url,
             success: function(data){
-                console.log("success getting a dude");
-                console.log(data);
+                self.model.formatDate();
                 self.render();
             },
             error: function(model, response){
@@ -31,5 +37,17 @@ module.exports = View.extend({
                 console.log(response);
             }
         });
-    }
+    },
+
+    backToDudesHandler: function(e){
+        e.preventDefault();
+        App.router.navigate("/dudes/", { trigger: true });
+    },
+
+    clickEditDudeHandler: function(e){
+        e.preventDefault();
+        var url = "/dudes/" + this.URLdate + "/" + this.dude  + "/edit"
+        App.router.navigate(url, { trigger: true });
+    },
+
 })

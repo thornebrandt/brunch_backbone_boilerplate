@@ -2,23 +2,29 @@ var App = require('application');
 
 module.exports = Backbone.Router.extend({
     initialize: function(){
-        console.log("initializing router");
         App.Views.AppView = require('../views/app-view');
         App.Views.IndexView = require('../views/index-view');
         App.Views.DudesView = require('../views/dudes-view');
         App.Views.DudeView = require('../views/dude-view');
         App.Views.NewDudeView = require('../views/new-dude-view');
+        App.Views.EditDudeView = require('../views/edit-dude-view');
         this.setupAjax();
 
     },
 
     routes: {
         '': 'index',
-        'dudes': 'dudes',
-        'dudes/new': 'newDude',
-        'dudes/:date/:dude' : 'specificDude',
-        'dudes/:data/:dude/edit' : 'editSpecificDude'
+        'dudes(/)': 'dudes',
+        'dudes/new(/)': 'newDude',
+        'dudes/:date/:dude(/)' : 'specificDude',
+        'dudes/:data/:dude/edit(/)' : 'editDude',
+        '*path' : 'defaultRoute',
     },
+
+    defaultRoute: function(){
+        this.index();
+    },
+
 
     loadApp: function(){
         if(!App.views.appView) {
@@ -36,14 +42,13 @@ module.exports = Backbone.Router.extend({
     specificDude: function(_date, _dude){
         this.loadApp();
         App.views.dudeView = new App.Views.DudeView();
-        App.views.dudeView.URLdate = _date;
-        App.views.dudeView.dude = _dude;
-        App.views.dudeView.findDude();
+        App.views.dudeView.fetchDude(_date, _dude);
     },
 
-    editSpecificDude: function(_data, _dude){
+    editDude: function(_date, _dude){
         this.loadApp();
-        console.log("editing dude view will go here");
+        App.views.editDudeView = new App.Views.EditDudeView();
+        App.views.editDudeView.fetchDude(_date, _dude);
     },
 
 

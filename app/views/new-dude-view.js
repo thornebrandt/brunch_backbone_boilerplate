@@ -50,10 +50,6 @@ module.exports = View.extend({
             progressall: function(e, data){
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 console.log("progress: " + progress);
-                // $('#progress .progress-bar').css(
-                //     'width',
-                //     progress + '%'
-                // );
             },
             fail: function(e, data){
                 console.log("fail");
@@ -84,6 +80,7 @@ module.exports = View.extend({
         });
 
     },
+
     setupDatePick: function(){
         var $dateInput = $("#dateInput");
         var today = new moment().format(time.datepicker_format);

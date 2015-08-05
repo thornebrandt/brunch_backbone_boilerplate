@@ -12,8 +12,8 @@ module.exports = ModelView.extend({
     },
     goToSpecificDude: function(e){
         e.preventDefault();
-        var dude = $(e.target).attr("data-dude");
-        var date = $(e.target).attr("data-date");
+        var dude = $(e.currentTarget).attr("data-dude");
+        var date = $(e.currentTarget).attr("data-date");
         var url =   "/dudes/" + date + "/" + dude;
         App.router.navigate(url, { trigger: true });
     },
