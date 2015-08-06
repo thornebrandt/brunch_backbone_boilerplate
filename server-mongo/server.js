@@ -24,6 +24,7 @@ var multerOptions = {
         return filename + Date.now()
     },
     onFileUploadStart: function(file){
+        return false;
         console.log(file.originalname + ' is uploading ...');
     },
     onFileUploadComplete: function(file){
@@ -55,8 +56,6 @@ app.get('/dudes', dudeController.getDudes);
 app.delete('/dude', dudeController.deleteDude);
 app.post('/dudes/new', dudeController.postDude);
 app.patch('/dudes/edit', dudeController.updateDude);
-app.post('/api/photo', dudeController.postDudePhoto);
-
 
 
 var server = app.listen(dbconfig.PORT_NUMBER, function(){

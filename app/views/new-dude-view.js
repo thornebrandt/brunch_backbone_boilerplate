@@ -28,7 +28,7 @@ module.exports = View.extend({
     },
 
     setupUploader: function(){
-        var url = BASE_URL + "/api/photo"
+        var url = BASE_URL + "/dudes/new"
 
         $('#fileupload').fileupload({
             url: url,

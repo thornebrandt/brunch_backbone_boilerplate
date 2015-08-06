@@ -25,13 +25,25 @@ module.exports = View.extend({
         this.model.formatDate();
         return this.model.toJSON();
     },
-    showPreviewImage: function(source) {
+    showPreviewImage: function(source){
         $("#imagePreview").attr("src", source);
     },
 
     setupImagePreview: function(){
+        console.log("setting up image preview");
         var fileHelper = new FileHelper();
-        fileHelper.uploadImagePreview( $("#fileupload"), this.showPreviewImage);
+        var self = this;
+        this.originalImage = $("#imagePreview").attr("src");
+        fileHelper.uploadImagePreview( $("#fileupload"), this.showPreviewImage, {
+            onError: function(errorMessage){
+                App.error(errorMessage);
+                self.revertPreviewImage();
+            }
+        });
+    },
+
+    revertPreviewImage: function(){
+        $("#imagePreview").attr("src", this.originalImage);
     },
 
     setupUploader: function(){
@@ -40,6 +52,7 @@ module.exports = View.extend({
         var url = BASE_URL + "/dudes/edit/" + _id;
         var url = BASE_URL + "/dudes/edit/";
         var self = this;
+
 
         $('#fileupload').fileupload({
             url: url,
@@ -63,11 +76,10 @@ module.exports = View.extend({
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 console.log("progress: " + progress);
             },
-            fail: function(e, data){
-                console.log("fail");
-                console.log(e);
-                console.log(data);
-            },
+            error: function(e, textStatus, errorThrown){
+                alert("That wasn't an image");
+                console.log(e.responseText);
+            }
         });
     },
 

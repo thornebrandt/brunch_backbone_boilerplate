@@ -3,10 +3,13 @@ module.exports = function(){
     var max_file_size = max_file_size || 5000000;
 
 
-    this.uploadImagePreview = function(_input, handler) {
+    this.uploadImagePreview = function(_input, handler, options) {
         //input : file input that holds image
         //btn :  ok.
         //handler : what happens after upload.  source is the image src
+        //options.onError = callback.
+        options = options || {};
+
         function showUploadedItem(source){
             handler(source);
         }
@@ -25,7 +28,7 @@ module.exports = function(){
                         reader.onloadend = function(e) {
                             showUploadedItem(e.target.result, file.fileName);
                             var file_size = file.size;
-                            //self.checkFileSize(file.size);
+                            console.log(file.name + " - " + file.type + " - " + self.formatSizeUnits(file.size));
                         };
                         reader.readAsDataURL(file);
                     }
@@ -33,11 +36,18 @@ module.exports = function(){
                         formdata.append("images[]", file);
                     }
                 } else {
-                    alert("That is not an image");
-                    $("#response").html("That was not an image");
+                    if(typeof options.onError === "function"){
+                        options.onError("That was not an image");
+                    } else {
+                        self.errorHandler("That was not an image");
+                    }
                 }
             }
         });
+    };
+
+    this.errorHandler = function(errorMessage){
+        alert(errorMessage);
     };
 
     this.checkFileSize = function(_filesize){

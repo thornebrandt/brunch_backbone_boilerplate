@@ -1,5 +1,5 @@
 var View     = require('./view')
-  , template = require('../templates/app')
+  , template = require('../templates/app-template')
   , jqueryHelper = require('../helpers/jqueryHelper');
 
 module.exports = View.extend({
