@@ -52,9 +52,11 @@ app.get('/something', function(req, res){
 app.get('/currentDude', dudeController.getCurrentDude);
 app.get('/dude/:date/:dude', dudeController.getDude);
 app.get('/dudes', dudeController.getDudes);
+app.delete('/dude', dudeController.deleteDude);
 app.post('/dudes/new', dudeController.postDude);
 app.patch('/dudes/edit', dudeController.updateDude);
 app.post('/api/photo', dudeController.postDudePhoto);
+
 
 
 var server = app.listen(dbconfig.PORT_NUMBER, function(){

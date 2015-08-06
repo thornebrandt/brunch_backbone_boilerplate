@@ -27,10 +27,11 @@ module.exports = Backbone.Router.extend({
 
 
     loadApp: function(){
-        if(!App.views.appView) {
-            App.views.appView = new App.Views.AppView();
-            App.views.appView.render();
+        if(!App.appView) {
+            App.appView = new App.Views.AppView();
+            App.appView.render();
         }
+        this.garbageCollection();
     },
 
     index: function() {
@@ -69,6 +70,15 @@ module.exports = Backbone.Router.extend({
         $.ajaxSetup({
             crossDomain: true
         });
+    },
+
+    garbageCollection: function(){
+        for(v in App.views){
+            var view = App.views[v];
+            view.undelegateEvents();
+            view.stopListening(Backbone);
+            view.stopListening();
+        }
     }
 
 

@@ -12,7 +12,8 @@ module.exports = View.extend({
     events: {
         'submit #dudeForm' : 'submitDudeFormHandler',
         'click #dudeBtn' : 'clickDudeHandler',
-        'click #dudesBtn' : 'clickDudesHandler'
+        'click #dudesBtn' : 'clickDudesHandler',
+        'click #deleteDudeBtn' : 'deleteDudeHandler'
     },
 
     afterRender: function(){
@@ -70,6 +71,29 @@ module.exports = View.extend({
         });
     },
 
+
+    deleteDudeHandler: function(e){
+        e.preventDefault();
+        var url = BASE_URL + "/dude";
+        this.model.save(
+            this.model.toJSON(),
+            {
+                url: url,
+                type: 'DELETE'
+            }
+        ).then(
+            function success(data){
+                console.log("we deleted this dude");
+                console.log(data);
+                App.router.navigate("dudes", { trigger: true });
+            },
+            function error(e){
+                console.log("error deleting");
+                console.log(e.responseText);
+            }
+        );
+
+    },
 
     submitDudeFormHandler: function(e){
         e.preventDefault();

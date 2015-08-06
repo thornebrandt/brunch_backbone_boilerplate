@@ -13,7 +13,7 @@ module.exports = View.extend({
     // },
     events: {
         'click #backToDudes' : 'backToDudesHandler',
-        'click #editDudeBtn' : 'clickEditDudeHandler'
+        'click #editDudeBtn' : 'clickEditDudeHandler',
     },
     getRenderData: function(){
         return this.model.toJSON();
@@ -46,8 +46,12 @@ module.exports = View.extend({
 
     clickEditDudeHandler: function(e){
         e.preventDefault();
+        console.log("clicked editing view");
         var url = "/dudes/" + this.URLdate + "/" + this.dude  + "/edit"
         App.router.navigate(url, { trigger: true });
     },
+
+
+
 
 })

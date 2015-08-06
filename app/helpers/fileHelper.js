@@ -1,5 +1,4 @@
 module.exports = function(){
-    console.log("file helper");
     var self = this;
     var max_file_size = max_file_size || 5000000;
 

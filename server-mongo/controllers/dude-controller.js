@@ -65,20 +65,25 @@ exports.getDude = function(req, res){
 }
 
 
+exports.deleteDude = function(req, res){
+    var id = req.body._id;
+    console.log("deleting a dude");
+    DudeModel.findById(id, function(err, dude){
+        dude.remove(function(err){
+            if(err) return handleError(err);
+            res.send(dude);
+        });
+    });
+}
+
+
 exports.updateDude = function(req, res){
     var id = req.body._id;
-    if(req.files){
+    if(req.files && typeof req.files.photo !== "undefined"){
         req.body.photo = dbconfig.upload_path + req.files.photo.name;
     }
-    console.log("req.body");
-    console.log(req.body);
-    console.log("what is id");
-    console.log(id);
-
 
     DudeModel.findById(id, function(err, dude){
-        console.log("what is dude");
-        console.log(dude);
         if(!err){
             dude.set(req.body)
             dude.save(function(err){
@@ -88,7 +93,7 @@ exports.updateDude = function(req, res){
         } else {
             return 'error updating dude';
         }
-    })
+    });
 }
 
 

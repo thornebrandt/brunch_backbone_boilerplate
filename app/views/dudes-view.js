@@ -8,17 +8,9 @@ module.exports = View.extend({
     el: "#main",
     id: 'index-view',
     template: template,
-    events: {
-        "click #newDudeBtn" : "newDudeBtnHandler"
-    },
     afterRender: function(){
         this.setupDudeCollection();
     },
-    newDudeBtnHandler: function(e){
-        e.preventDefault();
-        App.router.navigate("dudes/new", { trigger: true });
-    },
-
     setupDudeCollection: function(){
         this.dudeCollection = new DudeCollection();
         var self = this;
