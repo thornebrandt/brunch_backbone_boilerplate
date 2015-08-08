@@ -11,6 +11,10 @@
         {{ else }}
             no photo
         {{/if}}
+        {{#if thumb}}
+            <br>
+            <img id="dude-thumb" src="{{thumb}}">
+        {{/if}}
     {{ else }}
         <h1>Not found</h1>
     {{/if}}

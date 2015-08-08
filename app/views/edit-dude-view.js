@@ -77,8 +77,7 @@ module.exports = View.extend({
                 console.log("progress: " + progress);
             },
             error: function(e, textStatus, errorThrown){
-                alert("That wasn't an image");
-                console.log(e.responseText);
+                App.error("Something went wrong with uploading </br>" + e.responseText);
             }
         });
     },

@@ -5,7 +5,8 @@ var testSchema = new mongoose.Schema({
     dude: String,
     greeting: String,
     date: Date,
-    photo: String
+    photo: String,
+    thumb: String
 },
 {
     collection: 'testCollection'

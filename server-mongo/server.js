@@ -24,8 +24,14 @@ var multerOptions = {
         return filename + Date.now()
     },
     onFileUploadStart: function(file){
-        return false;
-        console.log(file.originalname + ' is uploading ...');
+        if(
+            file.mimetype !== 'image/png' &&
+            file.mimetype !== 'image/jpg' &&
+            file.mimetype !== 'image/jpeg' &&
+            file.mimetype !== 'images/gif'
+        ){
+            return false;
+        }
     },
     onFileUploadComplete: function(file){
         console.log(file.fieldname + ' was uploaded to ' + file.path);
