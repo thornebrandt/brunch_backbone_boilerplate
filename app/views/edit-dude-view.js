@@ -30,7 +30,6 @@ module.exports = View.extend({
     },
 
     setupImagePreview: function(){
-        console.log("setting up image preview");
         var fileHelper = new FileHelper();
         var self = this;
         this.originalImage = $("#imagePreview").attr("src");
@@ -69,7 +68,6 @@ module.exports = View.extend({
 
             },
             done: function(e, data){
-                console.log(data.result);
                 self.navigateToDude(data.result);
             },
             progressall: function(e, data){
@@ -94,8 +92,6 @@ module.exports = View.extend({
             }
         ).then(
             function success(data){
-                console.log("we deleted this dude");
-                console.log(data);
                 App.router.navigate("dudes", { trigger: true });
             },
             function error(e){

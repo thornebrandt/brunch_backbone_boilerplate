@@ -46,7 +46,6 @@ module.exports = View.extend({
 
     clickEditDudeHandler: function(e){
         e.preventDefault();
-        console.log("clicked editing view");
         var url = "/dudes/" + this.URLdate + "/" + this.dude  + "/edit"
         App.router.navigate(url, { trigger: true });
     },

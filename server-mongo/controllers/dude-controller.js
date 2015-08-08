@@ -4,7 +4,6 @@ var moment = require('moment');
 var UTC_format = "YYYY-MM-DDTHH:mm:ss";
 var db = require('../db');
 var gm = require('gm').subClass({imageMagick: true});
-var stringHelper = require('../helpers/string-helper');
 
 var self = {
     doSomething: function(){
@@ -21,7 +20,7 @@ var self = {
             if(!err){
                 res.json(dudes);
             } else {
-                return 'error';
+                return handleError(err);
             }
         });
     },
@@ -36,7 +35,7 @@ var self = {
                     exports.getPastDude(req, res);
                 }
             } else {
-                return 'error';
+                handleError(err);
             }
         });
     },
@@ -75,33 +74,37 @@ var self = {
         });
     },
 
-    updateDude: function(req, res){
+    editDude: function(req, res){
         var id = req.body._id;
         if(req.files && typeof req.files.photo !== "undefined"){
-            var file_string = req.files.photo.name;
-            var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
-            var thumb_name = file_name + "_thumb." + req.files.photo.extension;
-            gm(req.files.photo.path)
-                .resize('100', '100', '^')
-                .gravity('Center')
-                .crop('100', '100')
-                .write(dbconfig.thumb_path + thumb_name, function(err){
-                    if(!err){
-                        req.body.photo = dbconfig.upload_path + req.files.photo.name;
-                        req.body.thumb = dbconfig.upload_path + "/thumbs/" + thumb_name;
-                        self.saveDude(req, res);
-                    } else {
-                        console.log("error making thumbnail");
-                        console.log(err);
-                        return err;
-                    }
-                });
+            self.savePhotoAndThumb(req, res, self.updateDude) ;
         } else {
-            self.saveDude(req, res);
+            self.updateDude(req, res);
         }
     },
 
-    saveDude: function(req, res){
+    savePhotoAndThumb: function(req, res, callback){
+        var file_string = req.files.photo.name;
+        var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
+        var thumb_name = file_name + "_thumb." + req.files.photo.extension;
+        gm(req.files.photo.path)
+            .resize('100', '100', '^')
+            .gravity('Center')
+            .crop('100', '100')
+            .write(dbconfig.thumb_path + thumb_name, function(err){
+                if(!err){
+                    req.body.photo = dbconfig.upload_path + req.files.photo.name;
+                    req.body.thumb = dbconfig.upload_path + "/thumbs/" + thumb_name;
+                    callback(req, res);
+                } else {
+                    console.log("error making thumbnail");
+                    console.log(err);
+                    return err;
+                }
+            });
+    },
+
+    updateDude: function(req, res){
         var id = req.body._id;
         DudeModel.findById(id, function(err, dude){
             if(!err){
@@ -116,9 +119,11 @@ var self = {
         });
     },
 
-
     postDude: function(req, res){
-        req.body.photo = dbconfig.upload_path + req.files.photo.name;
+        self.savePhotoAndThumb(req, res, self.saveDude);
+    },
+
+    saveDude: function(req, res){
         var dude = new DudeModel(req.body);
         dude.save(function(err, dude){
             if(!err){
@@ -128,7 +133,6 @@ var self = {
             }
         });
     },
-
 
     getFutureDude: function(req, res){
         var myQuery = DudeModel.find({ date: { $gte: new Date() }}).sort( { date: 1 }).limit(1);

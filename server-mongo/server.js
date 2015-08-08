@@ -9,7 +9,7 @@ var express = require('express'),
 
 var db = require('./db');
 var dudeController = require('./controllers/dude-controller')
-var dudeModel = require('./models/dude-model')
+var photoController = require('./controllers/photo-controller')
 
 var app = express();
 app.use('/', express.static(__dirname + '/'));
@@ -21,7 +21,7 @@ app.use(cors());
 var multerOptions = {
     dest: 'public/uploads',
     rename: function(fieldname, filename){
-        return filename + Date.now()
+        return "" + Date.now() + "_" +  filename;
     },
     onFileUploadStart: function(file){
         if(
@@ -56,12 +56,22 @@ app.get('/balls', function(req, res){
 app.get('/something', function(req, res){
     res.send(dudeController.doSomething());
 });
+
+//dudes
 app.get('/currentDude', dudeController.getCurrentDude);
 app.get('/dude/:date/:dude', dudeController.getDude);
 app.get('/dudes', dudeController.getDudes);
 app.delete('/dude', dudeController.deleteDude);
 app.post('/dudes/new', dudeController.postDude);
-app.patch('/dudes/edit', dudeController.updateDude);
+app.patch('/dudes/edit', dudeController.editDude);
+//end-dudes
+
+//photos
+app.get('/photos/:dude_id', photoController.getPhotosByDude);
+app.get('/photos/:id', photoController.getPhoto);
+app.post('photos', photoController.postPhoto);
+app.delete('/photos/:id', photoController.deletePhoto);
+
 
 
 var server = app.listen(dbconfig.PORT_NUMBER, function(){

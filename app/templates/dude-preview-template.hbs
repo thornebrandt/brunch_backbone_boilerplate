@@ -1,4 +1,7 @@
 <a data-date="{{URLdate}}" data-dude="{{dude}}" href="#" class="dudePreview">
+    {{#if thumb}}
+        <img class="dudePreviewThumb" src="{{thumb}}" />
+    {{/if}}
     <i>{{formattedDate}}</i>
     <br>
     {{dude}}
