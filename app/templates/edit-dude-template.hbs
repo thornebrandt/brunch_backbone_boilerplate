@@ -13,16 +13,26 @@
     <br>
 {{!--     <input type="file" name="photo" id="photoInput" />
  --}}    <br>
-    <input id="fileupload" type="file" name="photo">
 
 
-<div id="progress" class="progress">
-    <div class="progress-bar progress-bar-success"></div>
-</div>
+    <div id="displayImage">
+        <img id="photoPreview" src="{{photo}}" width="300">
+    </div>
 
-<div id="displayImage">
-    <img id="imagePreview" src="{{photo}}" width="300">
-</div>
+    <div id="photoInputContainer" class="form-element">
+        Edit Photo: <input id="photoInput" class="fileupload" type="file" name="photo">
+    </div>
+
+    <div class="form-sep">
+    </div>
+
+    <div id="displayThumb">
+        <img id="thumbPreview" src="{{thumb}}" />
+    </div>
+
+    Edit Thumb:<input id="thumbInput" class="thumbupload" type="file" name="thumb">
+    <hr />
+
     <input type="submit" value="Submit" name="submit" id="upload_btn">
 </form>
 <p>

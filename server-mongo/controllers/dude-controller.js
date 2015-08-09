@@ -3,6 +3,7 @@ var DudeModel = require('../models/dude-model.js');
 var moment = require('moment');
 var UTC_format = "YYYY-MM-DDTHH:mm:ss";
 var db = require('../db');
+var fs = require('fs');
 var gm = require('gm').subClass({imageMagick: true});
 
 var self = {
@@ -78,10 +79,31 @@ var self = {
         var id = req.body._id;
         if(req.files && typeof req.files.photo !== "undefined"){
             self.savePhotoAndThumb(req, res, self.updateDude) ;
+        } else if(req.files && typeof req.files.thumb !== "undefined"){
+            self.saveThumb(req, res, self.updateDude);
         } else {
             self.updateDude(req, res);
         }
     },
+
+    saveThumb: function(req, res, callback){
+        var file_string = req.files.thumb.name;
+        var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
+        var thumb_name = file_name + "_thumb." + req.files.thumb.extension;
+        var thumb_path = dbconfig.thumb_path + thumb_name;
+        fs.rename(req.files.thumb.path, thumb_path, function(err){
+            if(!err){
+                req.body.thumb = dbconfig.upload_path + "thumbs/" + thumb_name;
+                callback(req, res);
+            } else {
+                console.log("error moving thumb...");
+                console.log(err);
+                return handleError(err);
+            }
+        });
+
+    },
+
 
     savePhotoAndThumb: function(req, res, callback){
         var file_string = req.files.photo.name;
@@ -94,7 +116,7 @@ var self = {
             .write(dbconfig.thumb_path + thumb_name, function(err){
                 if(!err){
                     req.body.photo = dbconfig.upload_path + req.files.photo.name;
-                    req.body.thumb = dbconfig.upload_path + "/thumbs/" + thumb_name;
+                    req.body.thumb = dbconfig.upload_path + "thumbs/" + thumb_name;
                     callback(req, res);
                 } else {
                     console.log("error making thumbnail");

@@ -18,34 +18,60 @@ module.exports = View.extend({
 
     afterRender: function(){
         this.setupDatePick();
-        this.setupUploader();
-        this.setupImagePreview();
+        this.setupPhotoUploader();
+        this.setupThumbUploader();
+        this.setupPhotoPreview();
+        this.setupThumbPreview();
     },
     getRenderData: function(){
         this.model.formatDate();
         return this.model.toJSON();
     },
-    showPreviewImage: function(source){
-        $("#imagePreview").attr("src", source);
+
+    showPreviewPhoto: function(source){
+        $("#photoPreview").attr("src", source);
     },
 
-    setupImagePreview: function(){
+    setupPhotoPreview: function(){
         var fileHelper = new FileHelper();
         var self = this;
-        this.originalImage = $("#imagePreview").attr("src");
-        fileHelper.uploadImagePreview( $("#fileupload"), this.showPreviewImage, {
+        this.originalPhoto = $("#photoPreview").attr("src");
+        fileHelper.uploadImagePreview( $("#photoInput"), this.showPreviewPhoto, {
             onError: function(errorMessage){
                 App.error(errorMessage);
-                self.revertPreviewImage();
+                self.revertPreviewPhoto();
             }
         });
     },
 
     revertPreviewImage: function(){
-        $("#imagePreview").attr("src", this.originalImage);
+        $("#photoPreview").attr("src", this.originalPhoto);
     },
 
-    setupUploader: function(){
+
+    showPreviewThumb: function(source){
+        $("#thumbPreview").attr("src", source);
+        $("#photoInputContainer").html("Only editing thumb");
+    },
+
+    setupThumbPreview: function(){
+        var fileHelper = new FileHelper();
+        var self = this;
+        this.originalThumb = $("#thumbPreview").attr("src");
+        fileHelper.uploadImagePreview( $("#thumbInput"), this.showPreviewThumb, {
+            onError: function(errorMessage){
+                App.error(errorMessage);
+                self.revertPreviewThumb();
+            }
+        });
+    },
+
+    revertPreviewThumb: function(){
+        $("#thumbPreview").attr("src", this.originalThumb);
+    },
+
+
+    setupThumbUploader: function(){
         //need this in addition to the submit dude handler
         var _id = this.model.get("_id");
         var url = BASE_URL + "/dudes/edit/" + _id;
@@ -53,7 +79,44 @@ module.exports = View.extend({
         var self = this;
 
 
-        $('#fileupload').fileupload({
+        $("#thumbInput").fileupload({
+            url: url,
+            type: "PATCH",
+            dataType: 'json',
+            add: function(e, data){
+                $("#upload_btn").off('click').on('click', function(e){
+                    e.preventDefault();
+                    var formObj = $("#dudeForm").serializeObject()
+                    formObj._id = _id;
+                    data.formData = formObj;
+                    data.submit();
+                });
+
+            },
+            done: function(e, data){
+                self.navigateToDude(data.result);
+            },
+            progressall: function(e, data){
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                console.log("progress: " + progress);
+            },
+            error: function(e, textStatus, errorThrown){
+                App.error("Something went wrong with uploading </br>" + e.responseText);
+            }
+        });
+    },
+
+
+
+    setupPhotoUploader: function(){
+        //need this in addition to the submit dude handler
+        var _id = this.model.get("_id");
+        var url = BASE_URL + "/dudes/edit/" + _id;
+        var url = BASE_URL + "/dudes/edit/";
+        var self = this;
+
+
+        $("#photoInput").fileupload({
             url: url,
             type: "PATCH",
             dataType: 'json',
