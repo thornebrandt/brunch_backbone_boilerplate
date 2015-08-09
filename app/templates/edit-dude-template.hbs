@@ -3,6 +3,9 @@
     <a href="#" id="dudeBtn">Back To Dude "{{dude}}"</a> |
     <a href="#" id="dudesBtn">All dudes</a>
 </p>
+
+<hr>
+
 <form id="dudeForm" enctype="multipart/form-data">
     Dude: <input type="text" name="dude" id="dudeInput" value="{{dude}}" required/>
     <br>
@@ -13,6 +16,9 @@
     <br>
 {{!--     <input type="file" name="photo" id="photoInput" />
  --}}    <br>
+
+
+     <h3>Main Photo</h3>
 
 
     <div id="displayImage">
@@ -26,15 +32,37 @@
     <div class="form-sep">
     </div>
 
+    <h3>Thumb</h3>
+
     <div id="displayThumb">
         <img id="thumbPreview" src="{{thumb}}" />
     </div>
 
     Edit Thumb:<input id="thumbInput" class="thumbupload" type="file" name="thumb">
     <hr />
-
+    <br>
     <input type="submit" value="Submit" name="submit" id="upload_btn">
 </form>
+
+<div style="border: gray solid 1px; margin: 20px;">
+<p>
+
+    <h2>Add Photo</h2>
+    <form id="newDudePhotoForm" enctype="multipart/form-data">
+        <br><input id="dudePhotoInput" class="fileupload" type="file" name="photo" />
+        <br>
+        <div id="displayDudePhoto">
+            <img id="dudePhotoPreview" src="/images/placeholder.jpg" width="300">
+        </div>
+        Caption: <input type="text" name="caption">
+        <br>
+        <input type="submit" value="Save New Photo" id="upload_sub_photo" />
+    </form>
+</p>
+</div>
+
+
 <p>
     <a href="#" id="deleteDudeBtn">DELETE DUDE</a>
 </p>
+

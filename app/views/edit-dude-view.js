@@ -11,6 +11,7 @@ module.exports = View.extend({
     template: template,
     events: {
         'submit #dudeForm' : 'submitDudeFormHandler',
+        'submit #newDudePhotoForm' : 'submitDudePhotoFormHandler',
         'click #dudeBtn' : 'clickDudeHandler',
         'click #dudesBtn' : 'clickDudesHandler',
         'click #deleteDudeBtn' : 'deleteDudeHandler'
@@ -20,7 +21,9 @@ module.exports = View.extend({
         this.setupDatePick();
         this.setupPhotoUploader();
         this.setupThumbUploader();
+        this.setupDudePhotoUploader();
         this.setupPhotoPreview();
+        this.setupDudePhotoPreview();
         this.setupThumbPreview();
     },
     getRenderData: function(){
@@ -42,6 +45,26 @@ module.exports = View.extend({
                 self.revertPreviewPhoto();
             }
         });
+    },
+
+    setupDudePhotoPreview: function(){
+        var fileHelper = new FileHelper();
+        var self = this;
+        this.originalDudePhoto = $("#dudePhotoPreview").attr("src");
+        fileHelper.uploadImagePreview( $("#dudePhotoInput"), this.showPreviewDudePhoto, {
+            onError: function(errorMessage){
+                App.error(errorMessage);
+                self.revertPreviewDudePhoto();
+            }
+        });
+    },
+
+    showPreviewDudePhoto: function(source){
+        $("#dudePhotoPreview").attr("src", source);
+    },
+
+    revertPreviewDudePhoto: function(){
+        $("#dudePhotoPreview").attr("src", this.originalDudePhoto);
     },
 
     revertPreviewImage: function(){
@@ -70,23 +93,20 @@ module.exports = View.extend({
         $("#thumbPreview").attr("src", this.originalThumb);
     },
 
-
-    setupThumbUploader: function(){
-        //need this in addition to the submit dude handler
+    setupUploader: function($el){
         var _id = this.model.get("_id");
         var url = BASE_URL + "/dudes/edit/" + _id;
         var url = BASE_URL + "/dudes/edit/";
         var self = this;
 
-
-        $("#thumbInput").fileupload({
+        $el.fileupload({
             url: url,
             type: "PATCH",
             dataType: 'json',
             add: function(e, data){
                 $("#upload_btn").off('click').on('click', function(e){
                     e.preventDefault();
-                    var formObj = $("#dudeForm").serializeObject()
+                    var formObj = $("#dudeForm").serializeObject();
                     formObj._id = _id;
                     data.formData = formObj;
                     data.submit();
@@ -105,44 +125,48 @@ module.exports = View.extend({
             }
         });
     },
+
+
+    setupThumbUploader: function(){
+        this.setupUploader($("#thumbInput"));
+    },
+
+    setupDudePhotoUploader: function(){
+        var dude_id = this.model.get("_id");
+        var url = BASE_URL + "/photos"
+        var self = this;
+        console.log("setting up dude photo uploader");
+        $("#dudePhotoInput").fileupload({
+            url: url,
+            type: "POST",
+            dataType: 'json',
+            add: function(e, data){
+                $("#upload_sub_photo").off('click').on('click', function(e){
+                    e.preventDefault();
+                    var formObj = $("#newDudePhotoForm").serializeObject();
+                    formObj.dude_id = dude_id;
+                    data.formData = formObj;
+                    data.submit();
+                });
+            },
+            done: function(e, data){
+                self.navigateToDude(self.model.toJSON());
+            },
+            progressall: function(e, data){
+            },
+            error: function(e, textStatus, errorThrown){
+                App.error("something went wrong with uploading </b>" + e.responseText);
+            }
+        });
+    },
+
 
 
 
     setupPhotoUploader: function(){
-        //need this in addition to the submit dude handler
-        var _id = this.model.get("_id");
-        var url = BASE_URL + "/dudes/edit/" + _id;
-        var url = BASE_URL + "/dudes/edit/";
-        var self = this;
-
-
-        $("#photoInput").fileupload({
-            url: url,
-            type: "PATCH",
-            dataType: 'json',
-            add: function(e, data){
-                $("#upload_btn").off('click').on('click', function(e){
-                    e.preventDefault();
-                    var formObj = $("#dudeForm").serializeObject()
-                    formObj._id = _id;
-                    data.formData = formObj;
-                    data.submit();
-                });
-
-            },
-            done: function(e, data){
-                self.navigateToDude(data.result);
-            },
-            progressall: function(e, data){
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                console.log("progress: " + progress);
-            },
-            error: function(e, textStatus, errorThrown){
-                App.error("Something went wrong with uploading </br>" + e.responseText);
-            }
-        });
+        //mainphoto
+        this.setupUploader($("#photoInput"));
     },
-
 
     deleteDudeHandler: function(e){
         e.preventDefault();
@@ -195,6 +219,10 @@ module.exports = View.extend({
         console.log(this.model);
     },
 
+    submitDudePhotoFormHandler: function(e){
+        e.preventDefault();
+        App.error("Must include a photo");
+    },
 
     setupDatePick: function(){
         var $dateInput = $("#dateInput");

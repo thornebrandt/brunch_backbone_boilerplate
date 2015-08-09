@@ -9,6 +9,17 @@ var PhotoModel = require('../models/photo-model.js');
 
 
 var self = {
+    getPhotos: function(req, res){
+        var _query = DudeModel.find().sort( { updated_at: -1 });
+        _query.exec(function(err, dudes){
+            if(!err){
+                res.json(dudes);
+            } else {
+                return handleError(err);
+            }
+        });
+    },
+
 
     getPhotosByDude: function(req, res){
         var dude_id = req.params.dude_id;
@@ -44,16 +55,12 @@ var self = {
     },
 
     savePhoto: function(req, res){
-        var id = req.body._id;
-        PhotoModel.findById(id, function(err, _model){
+        var photo = new PhotoModel(req.body);
+        photo.save(function(err, _model){
             if(!err){
-                _model.set(req.body)
-                _model.save(function(err){
-                    if(err) return handleError(err);
-                    res.send(_model);
-                });
+                res.json(_model);
             } else {
-                return 'error updating photo';
+                return err;
             }
         });
     },
@@ -82,16 +89,8 @@ var self = {
 
 
     postPhoto: function(req, res){
-        req.body.photo = dbconfig.upload_path + req.files.photo.name;
-        var photoModel = new PhotoModel(req.body);
-        photoModel.save(function(err, _model){
-            if(!err){
-                res.json(_model);
-            } else {
-                return err;
-            }
-        });
-    },
+        self.savePhotoAndThumb(req, res, self.savePhoto);
+    }
 
 }
 

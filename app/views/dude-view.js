@@ -3,14 +3,16 @@ var DudePreviewView = require('../views/dude-preview-view');
 var template = require('../templates/dude-template');
 var DudeModel = require('../models/dude-model');
 var time = require('../helpers/dateHelper');
+var PhotoCollection = require('../collections/photo-collection')
+var PhotoPreviewView = require('../views/photo-preview-view');
 
 module.exports = View.extend({
     el: "#main",
     id: 'index-view',
     template: template,
-    // afterRender: function(){
-    //     this.findDude();
-    // },
+    afterRender: function(){
+        this.fetchPhotos();
+    },
     events: {
         'click #backToDudes' : 'backToDudesHandler',
         'click #editDudeBtn' : 'clickEditDudeHandler',
@@ -18,6 +20,35 @@ module.exports = View.extend({
     getRenderData: function(){
         return this.model.toJSON();
     },
+
+    fetchPhotos: function(){
+        console.log("Fetching photos");
+        var _id = this.model.get("_id");
+        this.photoCollection = new PhotoCollection();
+        var self = this;
+        this.photoCollection.fetch({
+            url: BASE_URL + "/photos/" + _id,
+            success: function(data){
+                console.log("success");
+                console.log(data);
+                self.renderPhotos();
+            },
+            error: function(collection, response){
+                console.log("something went wrong getting photos");
+                console.log(response);
+            }
+        });
+    },
+
+    renderPhotos: function(){
+        this.photoCollection.each(function(model){
+            console.log("append");
+            $("#dudePhotos").append("<div class='photoPreviewContainer' id='"+model.get("_id")+"'></div>");
+            var photoPreviewView = new PhotoPreviewView(model);
+            photoPreviewView.render();
+        });
+    },
+
 
     fetchDude: function(_date, _dude){
         var self = this;

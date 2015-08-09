@@ -69,7 +69,7 @@ app.patch('/dudes/edit', dudeController.editDude);
 //photos
 app.get('/photos/:dude_id', photoController.getPhotosByDude);
 app.get('/photos/:id', photoController.getPhoto);
-app.post('photos', photoController.postPhoto);
+app.post('/photos', photoController.postPhoto);
 app.delete('/photos/:id', photoController.deletePhoto);
 
 

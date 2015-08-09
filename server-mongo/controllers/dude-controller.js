@@ -147,9 +147,9 @@ var self = {
 
     saveDude: function(req, res){
         var dude = new DudeModel(req.body);
-        dude.save(function(err, dude){
+        dude.save(function(err, _model){
             if(!err){
-                res.json(dude);
+                res.json(_model);
             } else {
                 return err;
             }
