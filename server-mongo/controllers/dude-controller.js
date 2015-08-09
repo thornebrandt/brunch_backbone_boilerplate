@@ -33,7 +33,7 @@ var self = {
                 if(dudes.length > 0){
                     res.json(dudes);
                 } else {
-                    exports.getPastDude(req, res);
+                    self.getPastDude(req, res);
                 }
             } else {
                 handleError(err);
