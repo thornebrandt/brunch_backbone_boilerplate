@@ -66,94 +66,107 @@ var self = {
     },
 
     deleteDude: function(req, res){
-        var id = req.body._id;
-        DudeModel.findById(id, function(err, dude){
-            dude.remove(function(err){
-                if(err) return handleError(err);
-                res.send(dude);
+        if(authenticate(req, res)){
+            var id = req.body._id;
+            DudeModel.findById(id, function(err, dude){
+                dude.remove(function(err){
+                    if(err) return handleError(err);
+                    res.send(dude);
+                });
             });
-        });
+        }
     },
 
     editDude: function(req, res){
-        var id = req.body._id;
-        if(req.files && typeof req.files.photo !== "undefined"){
-            self.savePhotoAndThumb(req, res, self.updateDude) ;
-        } else if(req.files && typeof req.files.thumb !== "undefined"){
-            self.saveThumb(req, res, self.updateDude);
-        } else {
-            self.updateDude(req, res);
+        if(authenticate(req, res)){
+            var id = req.body._id;
+            if(req.files && typeof req.files.photo !== "undefined"){
+                self.savePhotoAndThumb(req, res, self.updateDude) ;
+            } else if(req.files && typeof req.files.thumb !== "undefined"){
+                self.saveThumb(req, res, self.updateDude);
+            } else {
+                self.updateDude(req, res);
+            }
         }
     },
 
     saveThumb: function(req, res, callback){
-        var file_string = req.files.thumb.name;
-        var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
-        var thumb_name = file_name + "_thumb." + req.files.thumb.extension;
-        var thumb_path = dbconfig.thumb_path + thumb_name;
-        fs.rename(req.files.thumb.path, thumb_path, function(err){
-            if(!err){
-                req.body.thumb = dbconfig.upload_path + "thumbs/" + thumb_name;
-                callback(req, res);
-            } else {
-                console.log("error moving thumb...");
-                console.log(err);
-                return handleError(err);
-            }
-        });
-
+        if(authenticate(req, res)){
+            var file_string = req.files.thumb.name;
+            var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
+            var thumb_name = file_name + "_thumb." + req.files.thumb.extension;
+            var thumb_path = dbconfig.thumb_path + thumb_name;
+            fs.rename(req.files.thumb.path, thumb_path, function(err){
+                if(!err){
+                    req.body.thumb = dbconfig.upload_path + "thumbs/" + thumb_name;
+                    callback(req, res);
+                } else {
+                    console.log("error moving thumb...");
+                    console.log(err);
+                    return handleError(err);
+                }
+            });
+        }
     },
 
 
     savePhotoAndThumb: function(req, res, callback){
-        var file_string = req.files.photo.name;
-        var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
-        var thumb_name = file_name + "_thumb." + req.files.photo.extension;
-        gm(req.files.photo.path)
-            .resize('100', '100', '^')
-            .gravity('Center')
-            .crop('100', '100')
-            .write(dbconfig.thumb_path + thumb_name, function(err){
-                if(!err){
-                    req.body.photo = dbconfig.upload_path + req.files.photo.name;
-                    req.body.thumb = dbconfig.upload_path + "thumbs/" + thumb_name;
-                    callback(req, res);
-                } else {
-                    console.log("error making thumbnail");
-                    console.log(err);
-                    return err;
-                }
-            });
+        if(authenticate(req, res)){
+            var file_string = req.files.photo.name;
+            var file_name = file_string.substr(0, file_string.lastIndexOf('.'));
+            var thumb_name = file_name + "_thumb." + req.files.photo.extension;
+            gm(req.files.photo.path)
+                .resize('100', '100', '^')
+                .gravity('Center')
+                .crop('100', '100')
+                .write(dbconfig.thumb_path + thumb_name, function(err){
+                    if(!err){
+                        req.body.photo = dbconfig.upload_path + req.files.photo.name;
+                        req.body.thumb = dbconfig.upload_path + "thumbs/" + thumb_name;
+                        callback(req, res);
+                    } else {
+                        console.log("error making thumbnail");
+                        console.log(err);
+                        return err;
+                    }
+                });
+        }
     },
 
     updateDude: function(req, res){
-        var id = req.body._id;
-        DudeModel.findById(id, function(err, dude){
-            if(!err){
-                dude.set(req.body)
-                dude.save(function(err){
-                    if(err) return handleError(err);
-                    res.send(dude);
-                });
-            } else {
-                return 'error updating dude';
-            }
-        });
+        if(authenticate(req, res)){
+            var id = req.body._id;
+            DudeModel.findById(id, function(err, dude){
+                if(!err){
+                    dude.set(req.body)
+                    dude.save(function(err){
+                        if(err) return handleError(err);
+                        res.send(dude);
+                    });
+                } else {
+                    return 'error updating dude';
+                }
+            });
+        }
     },
 
     postDude: function(req, res){
-        self.savePhotoAndThumb(req, res, self.saveDude);
+        if(authenticate(req, res)){
+            self.savePhotoAndThumb(req, res, self.saveDude);
+        }
     },
 
     saveDude: function(req, res){
-        var dude = new DudeModel(req.body);
-        dude.save(function(err, _model){
-            if(!err){
-                res.json(_model);
-            } else {
-                return err;
-            }
-        });
+        if(authenticate(req, res)){
+            var dude = new DudeModel(req.body);
+            dude.save(function(err, _model){
+                if(!err){
+                    res.json(_model);
+                } else {
+                    return err;
+                }
+            });
+        }
     },
 
     getFutureDude: function(req, res){

@@ -1,6 +1,7 @@
+var Model = require('./model');
 var time = require('../helpers/dateHelper');
 
-module.exports = Backbone.Model.extend({
+module.exports = Model.extend({
     //url: BASE_URL + "/dudes/new",
     url: BASE_URL + "/dude",
     formatDate: function(){

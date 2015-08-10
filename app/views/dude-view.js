@@ -22,27 +22,23 @@ module.exports = View.extend({
     },
 
     fetchPhotos: function(){
-        console.log("Fetching photos");
         var _id = this.model.get("_id");
         this.photoCollection = new PhotoCollection();
         var self = this;
         this.photoCollection.fetch({
             url: BASE_URL + "/photos/" + _id,
             success: function(data){
-                console.log("success");
                 console.log(data);
                 self.renderPhotos();
             },
             error: function(collection, response){
                 console.log("something went wrong getting photos");
-                console.log(response);
             }
         });
     },
 
     renderPhotos: function(){
         this.photoCollection.each(function(model){
-            console.log("append");
             $("#dudePhotos").append("<div class='photoPreviewContainer' id='"+model.get("_id")+"'></div>");
             var photoPreviewView = new PhotoPreviewView(model);
             photoPreviewView.render();
@@ -59,13 +55,13 @@ module.exports = View.extend({
         this.model = new DudeModel();
         this.model.fetch({
             url: url,
-            success: function(data){
+            success: function(data, textStatus, options){
                 self.model.formatDate();
                 self.render();
             },
-            error: function(model, response){
+            error: function(model, e){
                 console.log("something went wrong getting a specific dude");
-                console.log(response);
+                console.log(e.responseText);
             }
         });
     },

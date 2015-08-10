@@ -12,8 +12,15 @@ module.exports = View.extend({
         "click #homeBtn" : "homeBtnHandler"
     },
 
+    getRenderData: function(){
+        if(App.authorized){
+            return { authorized: true }
+        }
+    },
+
     initialize: function(){
         jqueryHelper.initialize();
+        this.pubSub();
     },
 
     newDudeBtnHandler: function(e){
@@ -28,7 +35,17 @@ module.exports = View.extend({
 
     homeBtnHandler: function(e){
         e.preventDefault();
-        App.router.navigate("home", { trigger: true });
+        App.router.navigate("/", { trigger: true });
+    },
+
+    pubSub: function(){
+        var self = this;
+        this.listenTo(Backbone, "Unauthorized", self.unauthorizedHandler);
+    },
+
+    unauthorizedHandler: function(){
+        App.error("You are not authorized to edit documents.");
+        App.router.navigate("/", { trigger: true });
     }
 
 })

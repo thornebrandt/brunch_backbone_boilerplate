@@ -18,6 +18,8 @@ module.exports = Backbone.Router.extend({
         'dudes/new(/)': 'newDude',
         'dudes/:date/:dude(/)' : 'specificDude',
         'dudes/:data/:dude/edit(/)' : 'editDude',
+        'login/:password': 'loginRoute',
+        'logout' : 'logoutRoute',
         '*path' : 'defaultRoute',
     },
 
@@ -25,6 +27,22 @@ module.exports = Backbone.Router.extend({
         this.index();
     },
 
+    loginRoute: function(_password){
+        //$.cookie('password', md5(_password), { expires: 7, path: '/' });
+        window.localStorage.setItem('password', md5(_password));
+        App.authorized = true;
+        this.setupAjax();
+        this.navigate("dudes", {trigger: true, replace: true })
+    },
+
+    logoutRoute: function(){
+        console.log("removing password");
+        //$.removeCookie('password');
+        window.localStorage.removeItem('password');
+        App.authorized = false;
+        this.setupAjax();
+        this.navigate("/", { trigger: true, replace: true });
+    },
 
     loadApp: function(){
         if(!App.appView) {
@@ -48,8 +66,13 @@ module.exports = Backbone.Router.extend({
 
     editDude: function(_date, _dude){
         this.loadApp();
-        App.views.editDudeView = new App.Views.EditDudeView();
-        App.views.editDudeView.fetchDude(_date, _dude);
+        if(App.authorized){
+            App.views.editDudeView = new App.Views.EditDudeView();
+            App.views.editDudeView.fetchDude(_date, _dude);
+        } else {
+            App.error("Not authorized to edit");
+            this.navigate("/", { trigger: true, replace: true });
+        }
     },
 
 
@@ -61,14 +84,26 @@ module.exports = Backbone.Router.extend({
 
     newDude: function(){
         this.loadApp();
-        App.views.newDudeView = new App.Views.NewDudeView();
-        App.views.newDudeView.render();
+        if(App.authorized){
+            App.views.newDudeView = new App.Views.NewDudeView();
+            App.views.newDudeView.render();
+        } else {
+            App.error("Not authorized to create new dudes");
+            this.navigate("/", { trigger: true, replace: true });
+        }
     },
 
 
     setupAjax: function(){
+        var password = window.localStorage.getItem('password');
         $.ajaxSetup({
-            crossDomain: true
+            headers: { 'password' : password },
+            crossDomain: true,
+            statusCode: {
+                401: function(e){
+                    Backbone.trigger("Unauthorized");
+                }
+            }
         });
     },
 

@@ -25,3 +25,12 @@ process.on('SIGINT', function() {
     process.exit(0);
   });
 });
+
+authenticate = function(req, res){
+    if(req.headers.password === dbconfig.auth_token){
+        return true;
+    } else {
+        res.send(401);
+        return false;
+    }
+}

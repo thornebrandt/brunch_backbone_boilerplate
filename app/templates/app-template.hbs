@@ -2,8 +2,13 @@
     App Template, Yo
     <div id="menu">
         <a href="#" id="homeBtn">Home</a> |
-        <a href="#" id="newDudeBtn">New Dude</a> |
-        <a href="#" id="allDudesBtn">All Dudes</a> |
+        <a href="#" id="allDudesBtn">All Dudes</a>
+    </div>
+        {{#if authorized}}
+            <div id="admin_menu">
+                <a href="#" id="newDudeBtn">New Dude</a>
+            </div>
+        {{/if}}
     <div id="main">
 
     </div>

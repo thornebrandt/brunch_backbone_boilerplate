@@ -17,8 +17,10 @@
     <div id="dudePhotos">
         sub-photos
     </div>
-    <p>
-        <a href="#" id="editDudeBtn">EDIT</a>
-    </p>
+    {{#if authorized}}
+        <p>
+            <a href="#" id="editDudeBtn">EDIT</a>
+        </p>
+    {{/if}}
 </div>
 

@@ -14,6 +14,18 @@ var photoController = require('./controllers/photo-controller')
 var app = express();
 app.use('/', express.static(__dirname + '/'));
 app.use(express.static(__dirname + dbconfig.public_path));
+// app.use(function(req, res, next){
+//     console.log("dbconfig.password:");
+//     console.log(dbconfig.auth_token);
+//     if(req.headers.password){
+//         console.log("req.headers");
+//         console.log(req.headers.password);
+//     } else {
+//         console.log("req.body");
+//         console.log(req.body);
+//     }
+//     next();
+// });
 app.use(cors());
 
 
@@ -56,6 +68,7 @@ app.get('/balls', function(req, res){
 app.get('/something', function(req, res){
     res.send(dudeController.doSomething());
 });
+
 
 //dudes
 app.get('/currentDude', dudeController.getCurrentDude);
