@@ -11,9 +11,9 @@ var PhotoModel = require('../models/photo-model.js');
 var self = {
     getPhotos: function(req, res){
         var _query = DudeModel.find().sort( { updated_at: -1 });
-        _query.exec(function(err, dudes){
+        _query.exec(function(err, _models){
             if(!err){
-                res.json(dudes);
+                res.json(_models);
             } else {
                 return handleError(err);
             }

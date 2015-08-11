@@ -8,8 +8,9 @@ var express = require('express'),
 
 
 var db = require('./db');
-var dudeController = require('./controllers/dude-controller')
-var photoController = require('./controllers/photo-controller')
+var dudeController = require('./controllers/dude-controller');
+var photoController = require('./controllers/photo-controller');
+var drawingController = require('./controllers/drawing-controller');
 
 var app = express();
 app.use('/', express.static(__dirname + '/'));
@@ -72,6 +73,9 @@ app.get('/photos/:id', photoController.getPhoto);
 app.post('/photos', photoController.postPhoto);
 app.delete('/photos/:id', photoController.deletePhoto);
 
+//drawings
+app.get('/drawings', drawingController.getDrawings);
+app.post('/drawing', drawingController.postDrawing);
 
 
 var server = app.listen(dbconfig.PORT_NUMBER, function(){

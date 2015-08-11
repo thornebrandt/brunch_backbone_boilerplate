@@ -8,6 +8,7 @@ module.exports = Backbone.Router.extend({
         App.Views.DudeView = require('../views/dude-view');
         App.Views.NewDudeView = require('../views/new-dude-view');
         App.Views.EditDudeView = require('../views/edit-dude-view');
+        App.Views.DrawView = require('../views/draw-view');
         this.setupAjax();
 
     },
@@ -18,11 +19,21 @@ module.exports = Backbone.Router.extend({
         'dudes/new(/)': 'newDude',
         'dudes/:date/:dude(/)' : 'specificDude',
         'dudes/:data/:dude/edit(/)' : 'editDude',
+        'draw' : 'draw',
         '*path' : 'defaultRoute',
     },
 
     defaultRoute: function(){
         this.index();
+    },
+
+    draw: function(){
+        if(!App.appView) {
+            App.appView = new App.Views.AppView();
+            App.appView.render();
+        }
+        App.views.drawView = new App.Views.DrawView();
+        App.views.drawView.render();
     },
 
 
